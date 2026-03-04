@@ -1,0 +1,7 @@
+-- Generated baseline SQL (excerpt) for core tables
+CREATE TABLE "School" ("id" text PRIMARY KEY, "name" text NOT NULL, "city" text NOT NULL, "createdAt" timestamptz NOT NULL DEFAULT now());
+CREATE TABLE "User" ("id" text PRIMARY KEY, "schoolId" text NOT NULL REFERENCES "School"("id"), "email" text UNIQUE NOT NULL, "passwordHash" text NOT NULL, "firstName" text NOT NULL, "lastName" text NOT NULL, "role" text NOT NULL, "isEmailVerified" boolean NOT NULL DEFAULT false, "locale" text NOT NULL DEFAULT 'ru', "createdAt" timestamptz NOT NULL DEFAULT now(), "updatedAt" timestamptz NOT NULL DEFAULT now());
+CREATE TABLE "Student" ("id" text PRIMARY KEY, "userId" text UNIQUE NOT NULL REFERENCES "User"("id"), "classId" text NOT NULL, "admissionDate" timestamptz NOT NULL);
+CREATE TABLE "Grade" ("id" text PRIMARY KEY, "studentId" text NOT NULL, "subjectId" text NOT NULL, "gradeTypeId" text NOT NULL, "value" float8 NOT NULL, "reason" text, "changedByUserId" text NOT NULL, "createdAt" timestamptz NOT NULL DEFAULT now(), "updatedAt" timestamptz NOT NULL DEFAULT now());
+CREATE TABLE "Attendance" ("id" text PRIMARY KEY, "lessonId" text NOT NULL, "studentId" text NOT NULL, "status" text NOT NULL, "note" text, "date" timestamptz NOT NULL);
+CREATE TABLE "Homework" ("id" text PRIMARY KEY, "subjectId" text NOT NULL, "teacherId" text NOT NULL, "title" text NOT NULL, "description" text NOT NULL, "dueDate" timestamptz NOT NULL, "createdAt" timestamptz NOT NULL DEFAULT now());
