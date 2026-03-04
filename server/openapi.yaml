@@ -1,0 +1,70 @@
+openapi: 3.0.3
+info:
+  title: School Diary API
+  version: 1.0.0
+servers:
+  - url: http://localhost:4000/api
+paths:
+  /auth/register:
+    post:
+      summary: Register account
+      requestBody:
+        required: true
+        content:
+          application/json:
+            example: {"email":"new@school.by","password":"Password123!","firstName":"Иван","lastName":"Петров","role":"STUDENT","schoolId":"school-197"}
+      responses:
+        '201': { description: Created }
+  /auth/login:
+    post:
+      summary: Login
+      responses:
+        '200': { description: JWT tokens issued }
+  /auth/refresh:
+    post:
+      summary: Refresh JWT
+      responses:
+        '200': { description: Access token refreshed }
+  /users/me:
+    get: { summary: Current user, responses: { '200': { description: Profile } } }
+  /classes/{id}/timetable:
+    get: { summary: Class timetable, responses: { '200': { description: Timetable list } } }
+  /classes/{id}/attendance:
+    post: { summary: Create attendance marks, responses: { '201': { description: Saved } } }
+  /classes/{id}/grades:
+    post: { summary: Add grade, responses: { '201': { description: Grade created } } }
+  /students/{id}/report:
+    get: { summary: Student report, responses: { '200': { description: Report JSON } } }
+  /homework:
+    post: { summary: Assign homework, responses: { '201': { description: Homework created } } }
+  /homework/{id}/submissions:
+    get: { summary: Homework submissions, responses: { '200': { description: Submission list } } }
+  /messages:
+    post: { summary: Send private message, responses: { '201': { description: Message sent } } }
+  /announcements:
+    get: { summary: School/class announcements, responses: { '200': { description: List } } }
+  /files/upload:
+    post: { summary: Upload file, responses: { '201': { description: Uploaded metadata } } }
+  /export/report.pdf:
+    get: { summary: Export report PDF, responses: { '200': { description: PDF stream } } }
+  /admin/import/csv:
+    post: { summary: Import CSV/XLSX, responses: { '200': { description: Job queued } } }
+  /auth/logout:
+    post: { summary: Logout and revoke refresh tokens, responses: { '200': { description: Logged out } } }
+components:
+  schemas:
+    User:
+      type: object
+      properties: { id: { type: string }, email: { type: string }, role: { type: string }, schoolId: { type: string } }
+    Student:
+      type: object
+      properties: { id: { type: string }, userId: { type: string }, classId: { type: string } }
+    Grade:
+      type: object
+      properties: { id: { type: string }, studentId: { type: string }, value: { type: number }, reason: { type: string } }
+    Attendance:
+      type: object
+      properties: { id: { type: string }, studentId: { type: string }, status: { type: string }, date: { type: string, format: date-time } }
+    Homework:
+      type: object
+      properties: { id: { type: string }, title: { type: string }, dueDate: { type: string, format: date-time } }
