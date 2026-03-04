@@ -1,0 +1,6 @@
+- Enforce HTTPS and HSTS.
+- Rotate JWT secrets and use KMS.
+- Encrypt PII columns.
+- Apply least privilege for DB and S3.
+- Keep audit logs immutable.
+- Daily DB/S3 backups and restore drill.
