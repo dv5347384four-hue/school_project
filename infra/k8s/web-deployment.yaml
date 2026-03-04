@@ -1,0 +1,13 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata: { name: school-web }
+spec:
+  replicas: 2
+  selector: { matchLabels: { app: school-web } }
+  template:
+    metadata: { labels: { app: school-web } }
+    spec:
+      containers:
+        - name: web
+          image: ghcr.io/example/school-web:latest
+          ports: [{ containerPort: 3000 }]
